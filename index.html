@@ -37,7 +37,7 @@ a{color:#8fd4ff}
 <label><input id="showAxis" type="checkbox" checked> المحاور ✚</label>
 <label><input id="realSpeeds" type="checkbox" checked> سرعات حقيقية</label>
 </div>
-<canvas id="c" width="900" height="800"></canvas>
+<canvas id="c" width="900" height="820"></canvas>
 <div class="legend"><span>🔵 الأرض ثابتة</span><span>⚪ القمر</span><span>🟡 الشمس</span><span>🧊 الجدار</span><span>🛡️ القبة</span><span>✚ محور ممسوح</span></div>
 <div class="box"><h2>الأقمار الأربعة بحال قمرنا — نفس رنين UTL</h2>
 <table><tr><th>القمر</th><th>المحور الخفي</th><th>UTL</th><th>الفترة</th></tr>
@@ -52,40 +52,55 @@ a{color:#8fd4ff}
 </main>
 <footer><b>SAID KHAZAR</b> — Settat — 0.0 UTL<br>UTL - LURKM • الكون الصغير و الكوكب الممدود • خيال سينمائي</footer>
 <script>
-const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');const CX=450,CY=400;let running=true,t=0,animId=null;
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');const CX=450,CY=410;let running=true,t=0,animId=null;
 const $=id=>document.getElementById(id);const els={btn:$('btn'),speed:$('speed'),sv:$('sv'),showMoons:$('showMoons'),showOrbits:$('showOrbits'),showNames:$('showNames'),showAxis:$('showAxis'),realSpeeds:$('realSpeeds')};
 function sf(p,s){return els.realSpeeds.checked?365.25/p:s}
 const hidden=[
-{name:'المشتري',axis:'محور المشتري',orbitR:82,period:4332.59,styl:1.8,moon:{name:'إيو',period:1.769,orbitR:16,size:4,color:'#ffdd99',styl:6,utl:'1.097'}},
-{name:'زحل',axis:'محور زحل',orbitR:105,period:10759.22,styl:1.3,moon:{name:'ديون',period:2.737,orbitR:18,size:4,color:'#cceeff',styl:4.5,utl:'0.982'}},
-{name:'أورانوس',axis:'محور أورانوس',orbitR:125,period:30687.15,styl:1,moon:{name:'تيتانيا',period:8.706,orbitR:18,size:4,color:'#fff',styl:4,utl:'1.134'}},
-{name:'نبتون',axis:'محور نبتون',orbitR:145,period:60190.03,styl:.8,moon:{name:'تريتون',period:5.877,orbitR:18,size:4,color:'#aeeaff',styl:-4.5,utl:'0.923',retro:true}}];
+{name:'المشتري',axis:'محور المشتري',orbitR:88,period:4332.59,styl:1.8,moon:{name:'إيو',period:1.769,orbitR:20,size:4,color:'#ffdd99',styl:6,utl:'1.097'}},
+{name:'زحل',axis:'محور زحل',orbitR:112,period:10759.22,styl:1.3,moon:{name:'ديون',period:2.737,orbitR:22,size:4,color:'#cceeff',styl:4.5,utl:'0.982'}},
+{name:'أورانوس',axis:'محور أورانوس',orbitR:134,period:30687.15,styl:1,moon:{name:'تيتانيا',period:8.706,orbitR:22,size:4,color:'#fff',styl:4,utl:'1.134'}},
+{name:'نبتون',axis:'محور نبتون',orbitR:156,period:60190.03,styl:.8,moon:{name:'تريتون',period:5.877,orbitR:22,size:4,color:'#aeeaff',styl:-4.5,utl:'0.923',retro:true}}];
 function circle(x,y,r,c){ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=c;ctx.fill()}
 function orbit(x,y,r){if(!els.showOrbits.checked)return;ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.strokeStyle='rgba(255,255,255,.18)';ctx.stroke()}
-function label(txt,x,y){if(!els.showNames.checked)return;ctx.fillStyle='#fff';ctx.font='12px Arial';ctx.textAlign='center';ctx.fillText(txt,x,y)}
+// FIX: label بخلفية باش ما يتداخلش
+function label(txt,x,y,small=false){
+  if(!els.showNames.checked) return;
+  ctx.font= small ? 'bold 11px Arial' : 'bold 12px Arial';
+  const w=ctx.measureText(txt).width;
+  ctx.fillStyle='rgba(0,0,0,.78)';
+  ctx.beginPath(); ctx.roundRect(x-w/2-6, y-11, w+12, 18, 9); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.fillText(txt,x,y+3);
+}
 function frame(){
-ctx.clearRect(0,0,900,800);t+=0.006*parseFloat(els.speed.value);
+ctx.clearRect(0,0,900,820);t+=0.006*parseFloat(els.speed.value);
 ctx.beginPath();ctx.arc(CX,CY,365,0,6.283);ctx.fillStyle='rgba(80,180,255,.06)';ctx.fill();ctx.strokeStyle='rgba(140,210,255,.7)';ctx.lineWidth=2.5;ctx.setLineDash([10,7]);ctx.stroke();ctx.setLineDash([]);
 ctx.fillStyle='rgba(140,210,255,.9)';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText('القبة - DOME',CX,CY-373);
 orbit(CX,CY,320);orbit(CX,CY,70);
 ctx.beginPath();ctx.arc(CX,CY,48,0,6.283);ctx.strokeStyle='#aeeaff';ctx.lineWidth=10;ctx.stroke();
 ctx.beginPath();ctx.arc(CX,CY,48,0,6.283);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=2;ctx.setLineDash([4,8]);ctx.stroke();ctx.setLineDash([]);
-label('الجدار الجليدي',CX,CY+64);
-circle(CX,CY,26,'#4da6ff');label('الأرض - ثابتة',CX,CY+42);
+label('الجدار الجليدي',CX,CY+68);
+circle(CX,CY,26,'#4da6ff');label('الأرض - ثابتة',CX,CY+44);
 let ma=t*sf(27.32,3),mx=CX+Math.cos(ma)*70,my=CY+Math.sin(ma)*70;
-if(els.showMoons.checked){circle(mx,my,7,'#dddddd');label('القمر 1.000 UTL',mx,my+18)}
+if(els.showMoons.checked){circle(mx,my,7,'#dddddd');label('القمر 1.000 UTL',mx,my+22)}
 let sa=t*sf(365.25,1),sx=CX+Math.cos(sa)*320,sy=CY+Math.sin(sa)*320;
-circle(sx,sy,22,'#ffcc00');label('الشمس',sx,sy+36);
+circle(sx,sy,22,'#ffcc00');label('الشمس',sx,sy+38);
 hidden.forEach(h=>{
 let a=t*sf(h.period,h.styl),ax=sx+Math.cos(a)*h.orbitR,ay=sy+Math.sin(a)*h.orbitR;
 orbit(sx,sy,h.orbitR);
-if(els.showAxis.checked){ctx.strokeStyle='rgba(255,204,0,.7)';ctx.beginPath();ctx.moveTo(ax-7,ay);ctx.lineTo(ax+7,ay);ctx.moveTo(ax,ay-7);ctx.lineTo(ax,ay+7);ctx.stroke();ctx.fillStyle='rgba(255,204,0,.9)';ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText(h.axis,ax,ay+22)}
+if(els.showAxis.checked){
+  ctx.strokeStyle='rgba(255,204,0,.85)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(ax-8,ay);ctx.lineTo(ax+8,ay);ctx.moveTo(ax,ay-8);ctx.lineTo(ax,ay+8);ctx.stroke();
+  // الاسم ديال المحور الفوق باش ما يتلاقاش مع القمر
+  label(h.axis,ax,ay-26,true);
+}
 if(!els.showMoons.checked)return;
 orbit(ax,ay,h.moon.orbitR);
 let ms=sf(h.moon.period,h.moon.styl)*(h.moon.retro?-1:1),mma=t*ms,mx2=ax+Math.cos(mma)*h.moon.orbitR,my2=ay+Math.sin(mma)*h.moon.orbitR;
-circle(mx2,my2,h.moon.size,h.moon.color);label(h.moon.name+' '+h.moon.utl+' UTL',mx2,my2+16);
+circle(mx2,my2,h.moon.size,h.moon.color);
+label(h.moon.name+' '+h.moon.utl+' UTL',mx2,my2+22,true);
 });
-ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='bold 12px Arial';ctx.textAlign='left';ctx.fillText('SAID KHAZAR • UTL - LURKM',12,788);
+ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='bold 12px Arial';ctx.textAlign='left';ctx.fillText('SAID KHAZAR • UTL - LURKM',12,808);
 if(running)animId=requestAnimationFrame(frame);
 }
 els.btn.addEventListener('click',()=>{running=!running;els.btn.textContent=running?'⏸ إيقاف':'▶ تشغيل';if(running)frame();else cancelAnimationFrame(animId)});
