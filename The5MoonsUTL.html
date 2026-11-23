@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V5 - الأقمار الخمسة بـ UTL</title>
+<style>
+  body{margin:0;background:#050510;color:#fff;font-family:Arial;text-align:center}
+  h1{font-size:22px;margin:15px 0 5px}
+  p{font-size:14px;color:#ccc;padding:0 15px;line-height:1.8}
+  canvas{background:#000428;border-radius:10px;display:block;margin:10px auto;border:1px solid #333;max-width:98vw}
+  button{padding:12px 30px;font-size:18px;background:#ffcc00;border:none;border-radius:30px;cursor:pointer;font-weight:bold}
+  .legend{font-size:13px;margin:10px;line-height:2}
+  .explain{max-width:850px;margin:20px auto;text-align:right;background:#0d0d2a;border:1px solid #333;border-radius:15px;padding:20px}
+  .explain h2{text-align:center;color:#ffcc00}
+  .card{background:#14143a;border-radius:12px;padding:12px;margin-bottom:10px;font-size:14px;line-height:1.8}
+</style>
+</head>
+<body>
+
+<h1>🌍 V5 - الأقمار الخمسة فقط</h1>
+<p>
+<b>1 UTL = 384,400 كم = المسافة ديال قمرنا</b><br>
+حيدنا كاع الكواكب، و خلينا غير الشمس و الأرض و الأقمار باش نقارنو المسافات بـ UTL
+</p>
+
+<button id="btn" onclick="startSim()">▶ START SIMULATION</button>
+<canvas id="c" width="900" height="800"></canvas>
+
+<div class="legend">
+  🔵 الأرض &nbsp; 🟡 الشمس &nbsp; ⚪ قمرنا 1.00 UTL<br>
+  🔴 فوبوس 0.024 UTL &nbsp; 🟠 آيو 1.09 UTL &nbsp; 🟣 تيتان 3.18 UTL &nbsp; 🔵 تريتون 0.92 UTL
+</div>
+
+<div class="explain">
+  <h2>📖 شنو كيبان هنا؟</h2>
+  <div class="card"><b>⚪ قمرنا:</b> 1.00 UTL - هو المرجع</div>
+  <div class="card"><b>🔵 تريتون:</b> 0.92 UTL - قريب بزاف من قمرنا، كيدور بالعكس Retrograde</div>
+  <div class="card"><b>🟠 آيو:</b> 1.09 UTL - قريب بزاف من قمرنا، تقريبا نفس المسافة</div>
+  <div class="card"><b>🔴 فوبوس:</b> 0.024 UTL - لاصق في الكوكب ديالو، بعيد بزاف على 1 UTL</div>
+  <div class="card"><b>🟣 تيتان:</b> 3.18 UTL - بعيد 3 المرات على قمرنا</div>
+  <div class="card"><b>الخلاصة:</b> آيو و تريتون هما اللي كيحققو تقريبا 1 UTL، يعني كيدورو على نفس المسافة اللي كيدور عليها قمرنا.</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let running = false, t = 0, animId;
+const CX = 450, CY = 400;
+
+function drawCircle(x,y,r,color,label){
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
+  if(label){ ctx.fillStyle='#fff'; ctx.font='12px Arial'; ctx.textAlign='center'; ctx.fillText(label,x,y+r+14); }
+}
+function drawOrbit(x,y,r){
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.stroke();
+}
+
+function frame(){
+  ctx.clearRect(0,0,900,800);
+  t += 0.01;
+
+  // القبة
+  ctx.beginPath(); ctx.arc(CX,CY,365,0,Math.PI*2);
+  ctx.fillStyle='rgba(80,180,255,0.06)'; ctx.fill();
+  ctx.strokeStyle='rgba(140,210,255,0.7)'; ctx.lineWidth=2.5; ctx.setLineDash([10,7]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='rgba(140,210,255,0.9)'; ctx.font='bold 13px Arial'; ctx.textAlign='center';
+  ctx.fillText('القبة - DOME', CX, CY-373);
+
+  // الجدار الجليدي
+  ctx.beginPath(); ctx.arc(CX,CY,48,0,Math.PI*2);
+  ctx.strokeStyle='#aeeaff'; ctx.lineWidth=10; ctx.stroke();
+  ctx.beginPath(); ctx.arc(CX,CY,48,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.lineWidth=2; ctx.setLineDash([4,8]); ctx.stroke(); ctx.setLineDash([]);
+
+  // الأرض ثابتة
+  drawCircle(CX,CY,26,'#4da6ff','الأرض - ثابتة');
+
+  // الشمس كدور على الأرض - داخل القبة
+  let sunX = CX + Math.cos(t*0.027) * 320;
+  let sunY = CY + Math.sin(t*0.027) * 320;
+  drawOrbit(CX,CY,320);
+  drawCircle(sunX,sunY,22,'#ffcc00','الشمس');
+
+  // --- الأقمار الخمسة كاملين كيدورو على الأرض باش نقارنو المسافة بـ UTL ---
+  // المسافة في الشاشة = UTL * 70 (باش تبان)
+  // السرعة = 1 / الفترة الحقيقية، القمر مرجع
+
+  const moons = [
+    // قمرنا: 1.00 UTL, فترة 27.32 يوم
+    {name:'قمرنا 1.00 UTL', utl:1.00, dist:70, size:7, color:'#ffffff', period:27.32, dir:1},
+    // تريتون: 0.92 UTL, فترة 5.877 يوم, بالعكس
+    {name:'تريتون 0.92 UTL', utl:0.92, dist:64, size:6, color:'#70a1ff', period:5.877, dir:-1},
+    // آيو: 1.09 UTL, فترة 1.769 يوم
+    {name:'آيو 1.09 UTL', utl:1.09, dist:76, size:6, color:'#ff9f43', period:1.769, dir:1},
+    // فوبوس: 0.024 UTL, فترة 0.318 يوم - قريب بزاف، درنا ليه مسافة 58 باش يبان حدا الجدار
+    {name:'فوبوس 0.024 UTL', utl:0.024, dist:58, size:4, color:'#ff6b6b', period:0.318, dir:1},
+    // تيتان: 3.18 UTL, فترة 15.945 يوم - بعيد
+    {name:'تيتان 3.18 UTL', utl:3.18, dist:222, size:9, color:'#eccc68', period:15.945, dir:1},
+  ];
+
+  moons.forEach((m,i)=>{
+    drawOrbit(CX,CY,m.dist);
+    // السرعة الحقيقية: 1 / الفترة
+    let speed = (1 / m.period) * 27.32; // قمرنا = 1x
+    let a = t * speed * m.dir + i*1.2;
+    let mx = CX + Math.cos(a) * m.dist;
+    let my = CY + Math.sin(a) * m.dist;
+    drawCircle(mx,my,m.size,m.color,m.name);
+  });
+
+  if(running) animId = requestAnimationFrame(frame);
+}
+
+function startSim(){
+  if(!running){ running=true; document.getElementById('btn').innerText='⏸ PAUSE'; frame(); }
+  else { running=false; cancelAnimationFrame(animId); document.getElementById('btn').innerText='▶ START SIMULATION'; }
+}
+frame(); running=false;
+</script>
+</body>
+</html>
