@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UTL - LURKM | الأقمار حول محاور خفية | SAID KHAZAR</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:#050510;color:#fff;font-family:Arial;text-align:center}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#0a0a22;border-bottom:1px solid #222;flex-wrap:wrap;gap:8px}
+.logo{font-weight:900;color:#ffcc00;font-size:19px} .sub{display:block;font-size:12px;color:#aaa}
+.author{font-weight:900;font-size:18px} .author span{display:block;font-size:11px;color:#8fd4ff;font-weight:400}
+main{max-width:960px;margin:0 auto;padding:0 14px 30px}
+h1{font-size:24px;line-height:1.5} h1 span{color:#ffcc00}
+.lead{color:#ccc;line-height:1.9} .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap} .badges span{background:#14143a;border:1px solid #333;padding:8px 12px;border-radius:999px;font-size:13px}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;background:#0d0d2a;border:1px solid #333;border-radius:14px;padding:13px;margin:14px 0}
+.btn{background:#ffcc00;border:0;padding:11px 26px;border-radius:999px;font-weight:900;cursor:pointer;font-size:16px}
+canvas{background:#000428;border-radius:12px;border:1px solid #333;max-width:98vw;width:100%;height:auto;display:block;margin:0 auto}
+.legend{font-size:13px;margin:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;color:#ddd}
+.box{background:#0d0d2a;border:1px solid #333;border-radius:15px;padding:16px;text-align:right;margin:16px 0} .box h2{text-align:center;color:#ffcc00}
+table{width:100%;border-collapse:collapse} th{background:#0f2a44;padding:9px} td{border:1px solid #333;padding:9px} tr:nth-child(even) td{background:#14143a}
+footer{color:#888;font-size:12px;padding:16px;border-top:1px solid #222} footer b{color:#fff}
+a{color:#8fd4ff}
+</style>
+</head>
+<body>
+<header class="topbar"><div><span class="logo">UTL • LURKM</span><span class="sub">الكون الصغير و الكوكب الممدود</span></div><div class="author">SAID KHAZAR<span>Settat • 0.0 UTL</span></div></header>
+<main>
+<h1>🌍 الأرض ثابتة — <span>الأقمار تدور حول محاور خفية</span></h1>
+<p class="lead">الأرض ثابتة في المركز. الشمس كدور عليها. الكواكب تمحاو. الأقمار بقاو كيدورو على المحور ديالهم.</p>
+<div class="badges"><span>الكواكب: 0 — تم محوها</span><span>الأقمار: 4 + قمر الأرض = 5</span><span>السرعات: حقيقية</span></div>
+<div class="controls">
+<button id="btn" class="btn">⏸ إيقاف</button>
+<label>السرعة <input id="speed" type="range" min="0.2" max="3" step="0.1" value="1"> <b id="sv">1.0x</b></label>
+<label><input id="showMoons" type="checkbox" checked> الأقمار</label>
+<label><input id="showOrbits" type="checkbox" checked> المدارات</label>
+<label><input id="showNames" type="checkbox" checked> الأسماء</label>
+<label><input id="showAxis" type="checkbox" checked> المحاور ✚</label>
+<label><input id="realSpeeds" type="checkbox" checked> سرعات حقيقية</label>
+</div>
+<canvas id="c" width="900" height="800"></canvas>
+<div class="legend"><span>🔵 الأرض ثابتة</span><span>⚪ القمر</span><span>🟡 الشمس</span><span>🧊 الجدار</span><span>🛡️ القبة</span><span>✚ محور ممسوح</span></div>
+<div class="box"><h2>الأقمار الأربعة بحال قمرنا — نفس رنين UTL</h2>
+<table><tr><th>القمر</th><th>المحور الخفي</th><th>UTL</th><th>الفترة</th></tr>
+<tr><td>القمر — المرجع</td><td>الأرض</td><td><b>1.000</b></td><td>27.32 يوم</td></tr>
+<tr><td>تريتون</td><td>نبتون — ممسوح</td><td>0.923</td><td>5.877 يوم — عكسي</td></tr>
+<tr><td>ديون</td><td>زحل — ممسوح</td><td>0.982</td><td>2.737 يوم</td></tr>
+<tr><td>إيو</td><td>المشتري — ممسوح</td><td>1.097</td><td>1.769 يوم</td></tr>
+<tr><td>تيتانيا</td><td>أورانوس — ممسوح</td><td>1.134</td><td>8.706 يوم</td></tr></table>
+<p>كلهم داخل ±0.21 UTL. 1 UTL = 384,400 كلم. المسافات مضغوطة باش تبان، السرعات حقيقية 100%.</p></div>
+<div class="box"><h2>📖 الفكرة</h2><p>الكواكب تمحاو، ولكن الأقمار بقاو كيدورو على المحور ديالهم. النظام ماشي كتلة، النظام هو مدار + محور + رنين. القمر كيدور على نقطة، ماشي على حجر. هادا هو جوهر UTL — الكون الصغير.</p>
+<p><a href="index.html">← رجع للرئيسية</a> | <a href="EarthDome.html">EarthDome</a> | <a href="The5MoonsUTL.html">The5MoonsUTL</a></p></div>
+</main>
+<footer><b>SAID KHAZAR</b> — Settat — 0.0 UTL<br>UTL - LURKM • الكون الصغير و الكوكب الممدود • خيال سينمائي</footer>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');const CX=450,CY=400;let running=true,t=0,animId=null;
+const $=id=>document.getElementById(id);const els={btn:$('btn'),speed:$('speed'),sv:$('sv'),showMoons:$('showMoons'),showOrbits:$('showOrbits'),showNames:$('showNames'),showAxis:$('showAxis'),realSpeeds:$('realSpeeds')};
+function sf(p,s){return els.realSpeeds.checked?365.25/p:s}
+const hidden=[
+{name:'المشتري',axis:'محور المشتري',orbitR:82,period:4332.59,styl:1.8,moon:{name:'إيو',period:1.769,orbitR:16,size:4,color:'#ffdd99',styl:6,utl:'1.097'}},
+{name:'زحل',axis:'محور زحل',orbitR:105,period:10759.22,styl:1.3,moon:{name:'ديون',period:2.737,orbitR:18,size:4,color:'#cceeff',styl:4.5,utl:'0.982'}},
+{name:'أورانوس',axis:'محور أورانوس',orbitR:125,period:30687.15,styl:1,moon:{name:'تيتانيا',period:8.706,orbitR:18,size:4,color:'#fff',styl:4,utl:'1.134'}},
+{name:'نبتون',axis:'محور نبتون',orbitR:145,period:60190.03,styl:.8,moon:{name:'تريتون',period:5.877,orbitR:18,size:4,color:'#aeeaff',styl:-4.5,utl:'0.923',retro:true}}];
+function circle(x,y,r,c){ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=c;ctx.fill()}
+function orbit(x,y,r){if(!els.showOrbits.checked)return;ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.strokeStyle='rgba(255,255,255,.18)';ctx.stroke()}
+function label(txt,x,y){if(!els.showNames.checked)return;ctx.fillStyle='#fff';ctx.font='12px Arial';ctx.textAlign='center';ctx.fillText(txt,x,y)}
+function frame(){
+ctx.clearRect(0,0,900,800);t+=0.006*parseFloat(els.speed.value);
+ctx.beginPath();ctx.arc(CX,CY,365,0,6.283);ctx.fillStyle='rgba(80,180,255,.06)';ctx.fill();ctx.strokeStyle='rgba(140,210,255,.7)';ctx.lineWidth=2.5;ctx.setLineDash([10,7]);ctx.stroke();ctx.setLineDash([]);
+ctx.fillStyle='rgba(140,210,255,.9)';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText('القبة - DOME',CX,CY-373);
+orbit(CX,CY,320);orbit(CX,CY,70);
+ctx.beginPath();ctx.arc(CX,CY,48,0,6.283);ctx.strokeStyle='#aeeaff';ctx.lineWidth=10;ctx.stroke();
+ctx.beginPath();ctx.arc(CX,CY,48,0,6.283);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=2;ctx.setLineDash([4,8]);ctx.stroke();ctx.setLineDash([]);
+label('الجدار الجليدي',CX,CY+64);
+circle(CX,CY,26,'#4da6ff');label('الأرض - ثابتة',CX,CY+42);
+let ma=t*sf(27.32,3),mx=CX+Math.cos(ma)*70,my=CY+Math.sin(ma)*70;
+if(els.showMoons.checked){circle(mx,my,7,'#dddddd');label('القمر 1.000 UTL',mx,my+18)}
+let sa=t*sf(365.25,1),sx=CX+Math.cos(sa)*320,sy=CY+Math.sin(sa)*320;
+circle(sx,sy,22,'#ffcc00');label('الشمس',sx,sy+36);
+hidden.forEach(h=>{
+let a=t*sf(h.period,h.styl),ax=sx+Math.cos(a)*h.orbitR,ay=sy+Math.sin(a)*h.orbitR;
+orbit(sx,sy,h.orbitR);
+if(els.showAxis.checked){ctx.strokeStyle='rgba(255,204,0,.7)';ctx.beginPath();ctx.moveTo(ax-7,ay);ctx.lineTo(ax+7,ay);ctx.moveTo(ax,ay-7);ctx.lineTo(ax,ay+7);ctx.stroke();ctx.fillStyle='rgba(255,204,0,.9)';ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText(h.axis,ax,ay+22)}
+if(!els.showMoons.checked)return;
+orbit(ax,ay,h.moon.orbitR);
+let ms=sf(h.moon.period,h.moon.styl)*(h.moon.retro?-1:1),mma=t*ms,mx2=ax+Math.cos(mma)*h.moon.orbitR,my2=ay+Math.sin(mma)*h.moon.orbitR;
+circle(mx2,my2,h.moon.size,h.moon.color);label(h.moon.name+' '+h.moon.utl+' UTL',mx2,my2+16);
+});
+ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='bold 12px Arial';ctx.textAlign='left';ctx.fillText('SAID KHAZAR • UTL - LURKM',12,788);
+if(running)animId=requestAnimationFrame(frame);
+}
+els.btn.addEventListener('click',()=>{running=!running;els.btn.textContent=running?'⏸ إيقاف':'▶ تشغيل';if(running)frame();else cancelAnimationFrame(animId)});
+els.speed.addEventListener('input',()=>els.sv.textContent=parseFloat(els.speed.value).toFixed(1)+'x');
+frame();
+</script>
+</body>
+</html>
